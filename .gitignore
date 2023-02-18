@@ -172,8 +172,8 @@ dist
 .svelte-kit
 
 ### Solidity ###
-cache
-artifacts
+./cache
+./artifacts
 
 ### VisualStudioCode ###
 .vscode/*
