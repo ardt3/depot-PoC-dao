@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "ethereumjs-util": "^7.1.5",
     "hardhat": "^2.12.7"
   },
   "devDependencies": {

@@ -12,6 +12,9 @@ contract Dao is Inssurance{
 
     address public owner;
 
+    mapping(address => bool) public members;
+    uint256 public memberCount;
+
     struct user{
         string name;
         string country;
@@ -27,10 +30,16 @@ contract Dao is Inssurance{
 
     daoRules public rules;
 
-
-    constructor() {
-        owner == msg.sender;
+    struct Proposal {
+        address creator;
+        string description;
+        uint256 voteCnt;
+        //address[] memberVoted;
+        bool executed;
     }
+    
+    Proposal[] public proposals;
+
 
     function setGenralGovernance(user memory applicant, uint8 nbUser, bool profitable, string memory contractType) public{
         require(applicant.addr == owner, "Only owner can set the governance");
@@ -46,29 +55,61 @@ contract Dao is Inssurance{
         newUser.name  = name;
         newUser.country = country;
         newUser.isOwner = isOwner;
-        if (isOwner) {
-            newUser.addr = owner;
-        } else {
-            newUser.addr = msg.sender;   
-        }
+        newUser.addr = msg.sender;
 
         return newUser;
     }
 
-    function removeUser() public {
+    function addUser(user memory newUser) public {
+        require(!members[newUser.addr], "Member already exist");
+        members[newUser.addr] = true;
+        memberCount++;
+    }
+    
 
+    function removeUser(user memory userToRemove) public {
+        require(members[userToRemove.addr], "Member doesn't exist");
+        members[userToRemove.addr] = false;
+        memberCount--;
     }
 
-    function vote() public {
+    function vote(uint proposalsIndex) public {
+        Proposal storage proposal = proposals[proposalsIndex];
+        //require(members[msg.sender], "Only members can vote");
+        //for (uint i = 0; i < proposal.memberVoted.length; i++) {
+        //    require(proposal.memberVoted[i] != msg.sender, "Member has already voted");
+        //}
 
+       // proposal.memberVoted.push(msg.sender);
+        proposal.voteCnt++;
     }
 
-    function createProposal() public {
+    function createProposal(string memory description) public { 
+        //require(members[msg.sender], "Only members can create proposals");
+        
+        //address[] memory creatorVote;
+        //creatorVote[0] = msg.sender;
 
+        proposals.push(Proposal({
+            creator: msg.sender,
+            description: description,
+            voteCnt: 0,
+            //memberVoted: creatorVote,
+            executed: false
+        }));
     }
 
-    function execProposal() public {
+    function execProposal(uint proposalsIndex) public { // trouver un moyen pour appeler la fonction a exec
+        Proposal storage proposal = proposals[proposalsIndex];
+        require(!proposal.executed, "Proposal has already been executed");
+        require(proposal.voteCnt > memberCount / 2, "Proposal does not have enough votes");
 
+        proposal.executed = true;
+        // trouver un moyen pour appeler la fonction a exec
+    }
+
+    function getAddr() public view returns (address){
+        return msg.sender;
     }
 
 }

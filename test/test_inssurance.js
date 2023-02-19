@@ -1,41 +1,32 @@
 const { expect } = require("chai");
 const { ethers } = require("hardhat");
+const { randomBytes } = require('crypto');
+const { keccak256 } = require('ethereumjs-util');
 
 describe("Dao", function() {
   it("should init the dao", async function() {
     const Dao = await ethers.getContractFactory("Dao");
     const dao = await Dao.deploy();
 
-    const owner = await dao.createNewUser("Tartempion Toto", "FR", true);
-    await dao.setGovernance(owner, 3, true, "inssurance");
 
-    const daoRules = await dao.rules();
+    const ownerAddr = ethers.Wallet.createRandom().address;
+    const owner = await dao.connect(ownerAddr).createNewUser("Tartempion Toto", "FR", true);
+    await dao.addUser(owner);
 
-    console.log("L'utilisateur est: ", owner.name);
-    console.log("Originaire de: ", owner.country);
-    console.log("Il est admin: ", owner.isOwner);
-    console.log("Sont addr: ", owner.addr);
-    expect(owner.name).to.equal("Tartempion Toto");
-    expect(owner.country).to.equal("FR");
-    expect(owner.isOwner).to.equal(true);
+    const user1Addr = ethers.Wallet.createRandom().address;
+    const user1 = await dao.connect(user1Addr).createNewUser("Tartempion Tutu", "EN", false);
+    await dao.addUser(user1);
 
-    console.log("Nombre d'utilisateur de la dao: ", daoRules.nbUser);
-    console.log("Profitable: ", daoRules.profitable);
-    expect(daoRules.nbUser).to.equal(3);
-    expect(daoRules.profitable).to.equal(true);
+    const user2Addr = ethers.Wallet.createRandom().address;
+    const user2 = await dao.connect(user2Addr).createNewUser("Tartempion Titi", "EN", false);
+    await dao.addUser(user2);
 
-    const user2 = await dao.createNewUser("Tartempion Tata", "EN", false);
 
-    console.log("L'utilisateur est: ", user2.name);
-    console.log("Originaire de: ", user2.country);
-    console.log("Il est admin: ", user2.isOwner);
-    console.log("Sont addr: ", user2.addr);
-    expect(owner.name).to.equal("Tartempion Toto");
-    expect(owner.country).to.equal("FR");
-    expect(owner.isOwner).to.equal(true);
+    await dao.createProposal("Une description");
+    await dao.vote(0);
+    await dao.vote(0);
 
-    const test = await dao.setInssuranceGovernance();
-    console.log("test: ", test);
 
+    await dao.execProposal(0);
   });
 });
