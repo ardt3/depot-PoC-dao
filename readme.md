@@ -167,7 +167,7 @@ Compiled 21 Solidity files successfully
 ```
 
 ### Test 
-Les tests sont executer sur une blockchain local donc des ETH virtuel
+Les tests sont executés sur une blockchain local donc des ETH virtuels
 
 
 #### Ecriture d'un test 
