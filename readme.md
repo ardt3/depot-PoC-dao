@@ -1,14 +1,14 @@
 # DAO
 
 ## Problème dans la demande 
-Votre KYC _(?? Questionnaire ??)_ nécessite plus de clarté. Vous vouliez un questionnaire générale qui permet d'initialiser la gouvernance de la DAO si j'ai bien compris. \
-Si vous donnez un questionnaire à l'utilisateur (Questionnaire codé dans la DAO en Solidity). Ca veut dire que la DAO est déjà déployé et là ça pose plusieurs 
-problèmes, dont 3 que j'ai remarqué (peut être plus...) :
+Votre KYC _(?? Questionnaire ??)_ nécessite plus de clarté. Vous vouliez un questionnaire général qui permet d'initialiser la gouvernance de la DAO si j'ai bien compris. \
+Si vous donnez un questionnaire à l'utilisateur (Questionnaire codifié dans la DAO en Solidity). Ça veut dire que la DAO est déjà déployé et là ça pose plusieurs 
+problèmes, dont 3 que j'ai remarqué (peut-être plus...) :
 
-1. Normalement la gourvernance doit être codé en dure dans le code, en théorie elle n'est pas sencé être modifié alors que le contrat est déployé _(ce que vous voulez faire)_
-2. Solidity n'est __PAS UN LANGUAGE INTERATIF__, j'ai peut être pas respecter votre demande pour la KYC mais il y a une raison à cela. On ne peut pas poser des questions à un utilisateur en solidity commen on le ferai avec un `scanf` en C. Donc si on ne peut pas poser de question il faut passer par une interface utilisateur (web par exemple), vous pouvez à la limite envoyer un signal à l'api pour dire qu'il faut poser une question. Comme je l'ai dis je n'ai pas prévu de faire du web et encore moins de perdre du temps à apprendre React ou Angular pour l'utiliser qu'une fois. \
-3. Donc dans l'idée (je dis bien dans l'idée), je me suis dis que vous pouvez demandé a un dev web de faire une interface web qui fera votre KYC, deploy le contrat et appeler la fonction `setGeneralGovernance(...)` avec en arg les réponses à votre questionnaire. \
-Mais encore une fois là y'a un problème. Cette solution marche techniquement, j'ai pus la tester (avec un script de test pas une ui graphique). Mais imagine y'a un hacker qui passe par là et il arrive a accéder au code de la DAO, à tout moment il change les regles de gouvernance et vole tout le pognon. 
+1. Normalement la gouvernance doit être codée en dure dans le code, en théorie elle n'est pas censée être modifiée alors que le contrat est déployé _(ce que vous voulez faire)_
+2. Solidity n'est __PAS UN LANGUAGE INTERATIF__, j'ai peut être pas respecter votre demande pour la KYC mais il y a une raison à cela. On ne peut pas poser des questions à un utilisateur en solidity comme on le ferait avec un `scanf` en C. Donc si on ne peut pas poser de questions il faut passer par une interface utilisateur (web par exemple), vous pouvez à la limite envoyer un signal à l'api pour dire qu'il faut poser une question. Comme je l'ai dit je n'ai pas prévu de faire du web et encore moins de perdre du temps à apprendre React ou Angular pour l'utiliser qu'une fois. \
+3. Donc dans l'idée (je dis bien dans l'idée), je me suis dit que vous pouvez demandé a un dev web de faire une interface web qui fera votre KYC, deploy le contrat et appeler la fonction `setGeneralGovernance(...)` avec en arg les réponses à votre questionnaire. \
+Mais encore une fois, il y a un problème. Cette solution marche techniquement, j'ai pu la tester (avec un script de test pas une ui graphique). Mais imagine y'a un hacker qui passe par là et il arrive a accéder au code de la DAO, à tout moment il change les règles de gouvernance et vole tout le pognon. 
 
 C'est à vérifier je suis pas un pro solidity, mais avec quelque recherche j'ai l'impression que votre histoire est bancale (à vérifier).
 
@@ -86,6 +86,7 @@ module.exports = {
 ```
 
 ## Réalisation du code _solidity_
+_(C'est un extrait de contracts/dao.sol)_
 ```solidity
 // SPDX-License-Identifier: GPL-3.0   
 pragma solidity ^0.8.0; // la version de solidity
@@ -170,6 +171,7 @@ Les tests sont executer sur une blockchain local donc des ETH virtuel
 
 
 #### Ecriture d'un test 
+_(C'est un extrait de test/test.js)_
 ```js
 //plugins nécessaire pour le test
 const { expect } = require("chai");
