@@ -13,7 +13,7 @@ contract Dao is Inssurance{
     mapping(address => bool) public members;
     uint256 public memberCount;
 
-    struct User{
+    struct User{ 
         string name;
         string country;
         bool isOwner;
