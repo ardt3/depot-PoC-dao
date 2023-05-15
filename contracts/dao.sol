@@ -7,15 +7,15 @@ import "./inssurance.sol";
 
 contract Dao is Inssurance{
 
-    // role de l'utilisateur 
+    // rôle de l'utilisateur 
     bytes32 public constant USER_ROLE = keccak256("USER_ROLE");
     bytes32 public constant OWNER_ROLE = keccak256("OWNER_ROLE");
 
-    // tableau contenant les différents membres avec leurs adresses associées
+    // tableau contenant les différents membres avec leur adresse associée
     mapping(address => bool) public members;
     uint256 public memberCount; // contient le nombre de membres présent dans la dao
 
-    // Structure contenant les informations de l'utilisateurs
+    // Structure contenant les informations de l'utilisateur
     struct User{ 
         string name;
         string country;
@@ -23,14 +23,14 @@ contract Dao is Inssurance{
         address addr;
     }
 
-    // structure contenant les informations de la gouvernances
+    // structure contenant les informations de la gouvernance
     struct GovernanceValue{
         uint8 nbUserMax;
         bool profitable;
         string contractType;        
     }
 
-    // instance de la structure, permet par la suite d'accéder aux informations de la structure ci-dessus
+    // instance de la structure ; permet par la suite d'accéder aux informations de la structure ci-dessus
     GovernanceValue public governance;
 
     // structure contenant les informations d'une proposition
@@ -42,7 +42,7 @@ contract Dao is Inssurance{
         bool executed;
     }
     
-    // Chaque proposition à une instance de la structure Proposal, toute les instances seront mise dans ce tableau
+    // Chaque proposition correspond à une instance de la structure Proposal, toutes les instances seront mises dans ce tableau
     // on pourra par exemple accéder aux créateurs de la porposition 1 avec proposals[0].creator
     Proposal[] public proposals;
 
